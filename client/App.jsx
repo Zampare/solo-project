@@ -4,6 +4,8 @@ import LiftGenerator from './LiftGenerator.jsx';
 import LiftSearch from './LiftSearch.jsx';
 const App = () => {
   const [lifts, setlifts] = useState([]);
+  const [editvisible, seteditvisible] = useState(false);
+
   useEffect(() => {
     fetchLifts();
   }, []);
@@ -55,6 +57,7 @@ const App = () => {
   return (
     <div id='lifts'>
       <div id='topBox'>
+        <EditBox />
         <LiftGenerator fetchLifts={fetchLifts} />
         <LiftSearch fetchSpecificLifts={fetchSpecificLifts} />
       </div>
