@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import LiftDisplay from './LiftDisplay.jsx';
 import LiftGenerator from './LiftGenerator.jsx';
 import LiftSearch from './LiftSearch.jsx';
+import EditBox from './EditBox.jsx';
 const App = () => {
   const [lifts, setlifts] = useState([]);
   const [editvisible, seteditvisible] = useState(false);
