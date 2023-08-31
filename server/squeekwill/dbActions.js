@@ -34,7 +34,6 @@ dbActions.createTables = async () => {
 };
 
 dbActions.addLift = async (lift, userid) => {
-  console.log(lift, userid);
   try {
     const date = new Date();
     const params = [
@@ -45,7 +44,6 @@ dbActions.addLift = async (lift, userid) => {
       date.toUTCString(),
       userid,
     ];
-    console.log(params);
     const result = await pool.query(
       `INSERT INTO lifts (lift, weight, reps, rpe, date, userid) 
       VALUES ($1, $2, $3, $4, $5, $6) 
@@ -111,9 +109,7 @@ dbActions.updateLift = async (id, updateLift, userid) => {
     values.push(value);
   }
   query += ` where id = $1 and userid = $2 RETURNING id, lift, weight, reps, rpe, date`;
-  console.log(query, values);
   const result = await pool.query(query, values);
-  console.log(result.rows);
   return result.rows;
 };
 
@@ -125,7 +121,6 @@ dbActions.addUser = async (username, password) => {
       'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id';
     const values = [username, hashpass];
     const result = await pool.query(query, values);
-    console.log(result.rows);
     return result.rows;
   } catch (error) {
     console.log(error.detail);
@@ -139,8 +134,6 @@ dbActions.checkPassword = async (username, password) => {
     const values = [username];
     const result = await pool.query(query, values);
     const compare = await bcrypt.compare(password, result.rows[0].password);
-    console.log('compare', compare);
-    console.log(result.rows);
     return result.rows[0].id;
   } catch (error) {
     console.log(error.detail);
@@ -150,7 +143,6 @@ dbActions.checkPassword = async (username, password) => {
 dbActions.createSession = async id => {
   try {
     const cookieval = id + Date.now();
-    console.log(cookieval);
     const query = `INSERT INTO sessions (userid, cookieval) VALUES ($1, $2) RETURNING cookieval`;
     const values = [id, cookieval];
     const result = await pool.query(query, values);
