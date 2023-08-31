@@ -4,7 +4,6 @@ const LiftSearch = props => {
   const [weight, changeWeight] = useState('');
   const [reps, changeReps] = useState('');
   const [rpe, changeRPE] = useState('');
-  console.log(selectedLift);
   const searchLiftHandle = async () => {
     const searchLift = {
       lift: selectedLift,

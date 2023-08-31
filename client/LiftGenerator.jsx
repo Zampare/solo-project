@@ -4,7 +4,6 @@ const LiftGenerator = props => {
   const [weight, changeWeight] = useState('');
   const [reps, changeReps] = useState('');
   const [rpe, changeRPE] = useState('');
-  console.log(selectedLift);
   const submitLiftHandle = async () => {
     const newLift = {
       lift: selectedLift,
@@ -12,7 +11,6 @@ const LiftGenerator = props => {
       reps: reps,
       rpe: rpe,
     };
-    console.log(JSON.stringify(newLift));
     await fetch('/api/lift', {
       method: 'POST',
       headers: {

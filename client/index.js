@@ -1,12 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
-import App from './App';
+import Workouts from './Workouts';
 import { createRoot } from 'react-dom/client';
 import '/client/styles.css';
 const Router = () => {
   return (
     <div>
-      <App />
+      <Workouts />
     </div>
   );
 };

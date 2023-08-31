@@ -22,3 +22,24 @@ body {
   flex-direction: column;
   align-items: flex-end;
 }
+#edit {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: space-between;
+  z-index: 2;
+  padding: 12px;
+  background-color: brown;
+  position: absolute;
+}
+#editform {
+  display: flex;
+  flex-direction: row;
+}
+#edittop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#editexit {
+}

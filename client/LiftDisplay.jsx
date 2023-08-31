@@ -2,7 +2,6 @@ import React, { component, useState, useEffect } from 'react';
 
 const LiftDisplay = props => {
   const lift = props.lift;
-  console.log(lift);
   return (
     <div className='liftDisplay'>
       <strong>Lift:</strong>
@@ -16,6 +15,7 @@ const LiftDisplay = props => {
       <strong>Date:</strong>
       {lift.date.toString()}
       <button onClick={props.deleteLift}>Delete</button>
+      <button onClick={props.openEditBox}>Edit</button>
     </div>
   );
 };
