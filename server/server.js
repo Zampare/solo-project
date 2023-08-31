@@ -17,10 +17,8 @@ app.get('/', (req, res) => {
 app.post('/api/signup', async (req, res) => {
   const { username, password } = req.body;
   const result = await dbActions.addUser(username, password);
-  console.log('result', result);
   if (result.length > 0) {
     const id = result[0].id;
-    console.log('id', id);
     const cookie = await dbActions.createSession(id);
     res.cookie('session', `${cookie.cookieval}`, {
       httpOnly: true,
@@ -53,7 +51,6 @@ app.post('/api/signout', (req, res) => {});
 app.use('/api/lift', sessionHandler.isLoggedIn);
 
 app.post('/api/lift', async (req, res) => {
-  console.log(req.body, res.locals.userid);
   const { lift, reps, weight, rpe } = req.body;
   const newLift = { lift, reps, weight, rpe };
   result = await dbActions.addLift(newLift, res.locals.userid);
@@ -75,7 +72,6 @@ app.put('/api/lift/:id', async (req, res) => {
 });
 
 app.get('/api/lift', async (req, res) => {
-  console.log(res.locals.userid);
   const { lift, reps, weight, rpe } = req.query;
   const findLift = { lift, reps, weight, rpe };
   try {
