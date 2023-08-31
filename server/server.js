@@ -34,10 +34,9 @@ app.post('/api/signup', async (req, res) => {
 
 app.post('/api/signin', async (req, res) => {
   const { username, password } = req.body;
-  const result = await dbActions.checkPassword(username, password);
+  const id = await dbActions.checkPassword(username, password);
 
-  if (result.length > 0) {
-    const id = result[0].id;
+  if (id) {
     const cookie = await dbActions.createSession(id);
     res.cookie('session', `${cookie.cookieval}`, {
       httpOnly: true,

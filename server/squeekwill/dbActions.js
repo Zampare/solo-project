@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { Pool } = require('pg');
 const { validate } = require('webpack');
 require('dotenv').config();
@@ -26,7 +27,7 @@ dbActions.createTables = async () => {
     pool.query(`CREATE TABLE IF NOT EXISTS sessions
     (id SERIAL PRIMARY KEY NOT NULL,
     cookieval VARCHAR(250) NOT NULL,
-    userid INTEGER NOT NULL);`);
+    userid INTEGER NOT NULL DEFAULT -1);`);
   } catch (error) {
     console.log(error.log);
   }
@@ -118,9 +119,11 @@ dbActions.updateLift = async (id, updateLift, userid) => {
 
 dbActions.addUser = async (username, password) => {
   try {
+    const saltRounds = 10;
+    const hashpass = await bcrypt.hash(password, saltRounds);
     const query =
       'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id';
-    const values = [username, password];
+    const values = [username, hashpass];
     const result = await pool.query(query, values);
     console.log(result.rows);
     return result.rows;
@@ -132,11 +135,13 @@ dbActions.addUser = async (username, password) => {
 
 dbActions.checkPassword = async (username, password) => {
   try {
-    const query = 'SELECT id FROM users where username = $1 and password = $2';
-    const values = [username, password];
+    const query = 'SELECT id, password FROM users where username = $1';
+    const values = [username];
     const result = await pool.query(query, values);
+    const compare = await bcrypt.compare(password, result.rows[0].password);
+    console.log('compare', compare);
     console.log(result.rows);
-    return result.rows;
+    return result.rows[0].id;
   } catch (error) {
     console.log(error.detail);
   }
