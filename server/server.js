@@ -14,9 +14,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/lift', async (req, res) => {
-  console.log('hello');
+  console.log(req.body);
   const { lift, reps, weight, rpe } = req.body;
   const newLift = { lift, reps, weight, rpe };
+  console.log(newLift);
   result = await dbActions.addLift(newLift);
   res.status(200).json(result);
 });
@@ -28,7 +29,6 @@ app.delete('/api/lift/:id', async (req, res) => {
 });
 
 app.put('/api/lift/:id', async (req, res) => {
-  console.log('hello');
   const id = req.params.id;
   const { lift, reps, weight, rpe } = req.body;
   const updateLift = { lift, reps, weight, rpe };
@@ -36,11 +36,17 @@ app.put('/api/lift/:id', async (req, res) => {
   result = await dbActions.updateLift(id, updateLift);
   res.status(200).json(result);
 });
+
 app.get('/api/lift', async (req, res) => {
-  const { lift, reps, weight, rpe } = req.body;
+  const { lift, reps, weight, rpe } = req.query;
   const findLift = { lift, reps, weight, rpe };
-  result = await dbActions.getLift(findLift);
-  res.status(200).json(result);
+  console.log(findLift);
+  try {
+    result = await dbActions.getLift(findLift);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send();
+  }
 });
 
 app.listen(PORT);

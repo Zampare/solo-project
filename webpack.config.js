@@ -17,7 +17,7 @@ module.exports = {
       // match the output 'publicPath'
       publicPath: '/',
     },
-    proxy: { '/api/': 'http://localhost:3000' },
+    proxy: { '/api': 'http://localhost:3000', secure: false },
   },
   module: {
     rules: [

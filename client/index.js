@@ -2,10 +2,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
 import { createRoot } from 'react-dom/client';
+import '/client/styles.css';
 const Router = () => {
   return (
     <div>
-      hello
       <App />
     </div>
   );

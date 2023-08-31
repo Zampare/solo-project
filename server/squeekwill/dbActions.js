@@ -8,35 +8,47 @@ const pool = new Pool({
 dbActions = {};
 
 dbActions.createTable = async () => {
-  const result = await pool.query(`CREATE TABLE IF NOT EXISTS lifts 
-        (id SERIAL PRIMARY KEY NOT NULL, 
-        lift VARCHAR(250) NOT NULL, 
-        reps INTEGER NOT NULL, 
-        weight INTEGER NOT NULL, 
-        rpe INTEGER, 
-        time TIMESTAMP);`);
+  try {
+    const result = await pool.query(`CREATE TABLE IF NOT EXISTS lifts 
+          (id SERIAL PRIMARY KEY NOT NULL, 
+          lift VARCHAR(250) NOT NULL, 
+          reps INTEGER NOT NULL, 
+          weight INTEGER NOT NULL, 
+          rpe INTEGER, 
+          date TIMESTAMP);`);
+  } catch (error) {
+    console.log(error.log);
+  }
 };
 
 dbActions.addLift = async lift => {
-  const date = new Date();
-  const params = [
-    lift.lift,
-    lift.weight,
-    lift.reps,
-    lift.rpe,
-    date.toUTCString(),
-  ];
-  const result = await pool.query(
-    `INSERT INTO lifts (lift, weight, reps, rpe, time) 
-    VALUES ($1, $2, $3, $4, $5) 
-    RETURNING id, lift, weight, reps, rpe, time`,
-    params,
-  );
-  return result.rows;
+  try {
+    const date = new Date();
+    const params = [
+      lift.lift,
+      lift.weight,
+      lift.reps,
+      lift.rpe,
+      date.toUTCString(),
+    ];
+    const result = await pool.query(
+      `INSERT INTO lifts (lift, weight, reps, rpe, date) 
+      VALUES ($1, $2, $3, $4, $5) 
+      RETURNING id, lift, weight, reps, rpe, date`,
+      params,
+    );
+    return result.rows;
+  } catch (error) {
+    console.log(error.log);
+  }
 };
 
 dbActions.deleteLift = async liftid => {
-  const result = await pool.query('DELETE FROM lifts WHERE id=$1', [liftid]);
+  try {
+    const result = await pool.query('DELETE FROM lifts WHERE id=$1', [liftid]);
+  } catch (error) {
+    console.log(error.log);
+  }
 };
 
 dbActions.getLift = async lift => {
@@ -44,11 +56,22 @@ dbActions.getLift = async lift => {
   let values = [];
   for (const [key, value] of Object.entries(lift)) {
     if (value !== undefined) {
-      query += ` and ${key} = $${values.length + 1}`;
-      values.push(value);
+      if (value.at(0) === '<') {
+        query += ` and ${key} < $${values.length + 1}`;
+        values.push(value.slice(1));
+      } else if (value.at(0) === '>') {
+        query += ` and ${key} > $${values.length + 1}`;
+        values.push(value.slice(1));
+      } else if (value.at(0) === '=') {
+        query += ` and ${key} = $${values.length + 1}`;
+        values.push(value.slice(1));
+      } else {
+        query += ` and ${key} = $${values.length + 1}`;
+        values.push(value);
+      }
     }
   }
-  query += ' ORDER BY date';
+  query += ' ORDER BY date DESC';
   const result = await pool.query(query, values);
   return result.rows;
 };
@@ -67,7 +90,7 @@ dbActions.updateLift = async (id, updateLift) => {
     query += ` ${key} = $${values.length + 1}`;
     values.push(value);
   }
-  query += ` where id = $1 RETURNING id, lift, weight, reps, rpe, time`;
+  query += ` where id = $1 RETURNING id, lift, weight, reps, rpe, date`;
   console.log(query, values);
   const result = await pool.query(query, values);
   console.log(result.rows);

@@ -1,0 +1,24 @@
+body {
+  background-color: black;
+}
+#lifts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+#liftgenerator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+#topBox {
+  display: flex;
+  flex-direction: row;
+}
+#liftSearch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
