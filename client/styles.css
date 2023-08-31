@@ -41,5 +41,28 @@ body {
   flex-direction: row;
   justify-content: space-between;
 }
-#editexit {
+#logout {
+  position: absolute;
+  left: 0;
+  height: 25px;
+  align-self: first baseline;
+}
+#loginpage {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 300px;
+  color: white;
+}
+#loginbuttonbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: inherit;
+}
+#signuppage {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 250px;
 }

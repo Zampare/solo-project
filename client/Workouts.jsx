@@ -3,7 +3,9 @@ import LiftDisplay from './LiftDisplay.jsx';
 import LiftGenerator from './LiftGenerator.jsx';
 import LiftSearch from './LiftSearch.jsx';
 import EditBox from './EditBox.jsx';
+import { useNavigate } from 'react-router-dom';
 const Workouts = () => {
+  const navigate = useNavigate();
   const [lifts, setlifts] = useState([]);
   const [editID, seteditID] = useState(-1);
   const [edithidden, setedithidden] = useState(true);
@@ -35,6 +37,9 @@ const Workouts = () => {
     changeEditWeight(lift.weight);
     changeEditReps(lift.reps);
     changeEditRPE(lift.rpe);
+  };
+  const logOut = () => {
+    navigate('/');
   };
   useEffect(() => {
     fetchLifts();
@@ -90,6 +95,9 @@ const Workouts = () => {
   return (
     <div id='lifts'>
       <div id='topBox'>
+        <button id='logout' onClick={logOut}>
+          Log Out
+        </button>
         <EditBox things={things} fetchLifts={fetchLifts} />
         <LiftGenerator fetchLifts={fetchLifts} />
         <LiftSearch fetchSpecificLifts={fetchSpecificLifts} />
